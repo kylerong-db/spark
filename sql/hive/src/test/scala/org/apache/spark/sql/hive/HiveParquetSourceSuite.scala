@@ -382,4 +382,11 @@ class HiveParquetSourceSuite extends ParquetPartitioningTest {
       }
     }
   }
+
+  test("Create view with dashes in column type") {
+    withView("t") {
+      sql("CREATE VIEW t AS SELECT STRUCT('a' AS `$a`, 1 AS b) q")
+      checkAnswer(spark.table("t"), Row(Row("a", 1)))
+    }
+  }
 }
